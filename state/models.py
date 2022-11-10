@@ -21,6 +21,7 @@ class Stud(models.Model):
     email = models.EmailField(max_length=100)
     contact = models.CharField(max_length=15)
     question = models.CharField(max_length=1000)
+    answer = models.CharField(max_length=1000)
 
 
 

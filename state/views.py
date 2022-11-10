@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from .models import State
 from .models import Stud
 from .filters import StateFilter
@@ -48,8 +48,13 @@ def stud(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         contact = request.POST.get('contact')
+        answer = request.POST.get('answer')
         question = ran
-        stud = Stud(name=name, email=email, contact=contact, question=question)
+
+        stud = Stud(name=name, email=email, contact=contact, question=question , answer=answer)
+
+        
+
         if Stud.objects.filter(email=email).exists():
             return render(request, 'stud.html', {'error': 'Email already exists'})
 
@@ -57,11 +62,16 @@ def stud(request):
         if Stud.objects.filter(contact=contact).exists():
             return render(request, 'stud.html', {'error': 'Contact already exists'})
         
-        else:
+        if answer != '':
             stud.save()
-            return render(request, 'stud.html', {'success': 'Your Question has been submitted'})
+            return redirect('suc')
+        else:
+            return render(request, 'stud.html', {'error': 'Please answer the question'})
 
     return render(request,'stud.html', {'ran':ran})
+
+def suc(request):
+    return render(request,'suc.html')
 
 
 
